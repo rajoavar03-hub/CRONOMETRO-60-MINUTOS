@@ -75,46 +75,199 @@
 
         <section id="mensaje" class="mensaje">INICIA EL TURNO PARA COMENZAR</section>
 
-        <section class="controles controles-principales">
-            <button id="btnIniciar" class="btn btn-iniciar" disabled>
-                <span class="btn-icon">▶</span> INICIAR
-            </button>
+        <section class="controles">
 
-            <button id="btnDescargar" class="btn btn-descargar" disabled>
-                <span class="btn-icon">↓</span> DESCARGAR
-            </button>
+    <button
+        id="btnIniciar"
+        class="btn btn-iniciar"
+        disabled
+    >
+        <span class="btn-icon">▶</span>
+        INICIAR
+    </button>
 
-            <button id="btnCargando" class="btn btn-cargando" disabled>
-                <span class="btn-icon">↑</span> CARGANDO
-            </button>
+    <button
+        id="btnDescargar"
+        class="btn btn-descargar"
+        disabled
+    >
+        <span class="btn-icon">↓</span>
+        DESCARGAR
+    </button>
 
-            <button id="btnFinalizar" class="btn btn-finalizar" disabled>
-                <span class="btn-icon">■</span> FINALIZAR PROCESO
-            </button>
+    <button
+        id="btnCargando"
+        class="btn btn-cargando"
+        disabled
+    >
+        <span class="btn-icon">↑</span>
+        CARGANDO
+    </button>
 
-            <button id="btnReiniciar" class="btn btn-reiniciar" disabled>
-                <span class="btn-icon">↻</span> REINICIAR
-            </button>
-        </section>
+    <button
+        id="btnFinalizar"
+        class="btn btn-finalizar"
+        disabled
+    >
+        <span class="btn-icon">■</span>
+        FINALIZAR PROCESO
+    </button>
 
-        <section class="alertas">
-            <div id="alerta15" class="alerta">
-                <span class="circulo amarillo"></span>
-                <div><strong>15 MIN</strong><small>PASAR POR FACTURAS</small></div>
+    <button
+        id="btnNuevoProceso"
+        class="btn btn-nuevo"
+        disabled
+    >
+        <span class="btn-icon">＋</span>
+        NUEVO PROCESO
+    </button>
+
+    <button
+        id="btnReiniciar"
+        class="btn btn-reiniciar"
+        disabled
+    >
+        <span class="btn-icon">↻</span>
+        REINICIAR
+    </button>
+
+</section>
+
+<section class="alertas">
+
+    <!-- ALERTA 30 MINUTOS -->
+    <div
+        id="alerta30"
+        class="alerta"
+    >
+        <span class="circulo amarillo"></span>
+
+        <div>
+            <strong>
+                30 MIN
+            </strong>
+
+            <small>
+                ALERTA
+            </small>
+        </div>
+    </div>
+
+
+    <!-- ALERTA 15 MINUTOS -->
+    <div
+        id="alerta15"
+        class="alerta"
+    >
+        <span class="circulo amarillo"></span>
+
+        <div>
+            <strong>
+                15 MIN
+            </strong>
+
+            <small>
+                PASAR POR FACTURAS
+            </small>
+        </div>
+    </div>
+
+
+    <!-- ALERTA 5 MINUTOS -->
+    <div
+        id="alerta5"
+        class="alerta"
+    >
+        <span class="circulo rojo"></span>
+
+        <div>
+            <strong>
+                5 MIN
+            </strong>
+
+            <small>
+                ALERTA
+            </small>
+        </div>
+    </div>
+
+
+    <!-- ALERTA 1 MINUTO -->
+    <div
+        id="alerta1"
+        class="alerta"
+    >
+        <span class="circulo rojo"></span>
+
+        <div>
+            <strong>
+                1 MIN
+            </strong>
+
+            <small>
+                ALERTA
+            </small>
+        </div>
+    </div>
+
+</section>
+
+
+        <section class="historial">
+
+    <div class="historial-header">
+
+        <div>
+            <span class="historial-titulo">
+                PROCESOS DEL DÍA
+            </span>
+
+            <small>
+                REGISTRO DE VEHÍCULOS ATENDIDOS
+            </small>
+        </div>
+
+        <div class="resumen-procesos">
+
+            <div>
+                <strong id="procesosDia">0</strong>
+                <span>PROCESOS</span>
             </div>
-            <div id="alerta10" class="alerta">
-                <span class="circulo naranja"></span>
-                <div><strong>10 MIN</strong><small>ALERTA</small></div>
+
+            <div>
+                <strong id="promedioDia">--</strong>
+                <span>PROMEDIO</span>
             </div>
-            <div id="alerta5" class="alerta">
-                <span class="circulo rojo"></span>
-                <div><strong>5 MIN</strong><small>ALERTA</small></div>
-            </div>
-            <div id="alerta1" class="alerta">
-                <span class="circulo rojo"></span>
-                <div><strong>1 MIN</strong><small>ALERTA</small></div>
-            </div>
-        </section>
+
+        </div>
+
+    </div>
+
+    <div class="tabla-contenedor">
+
+        <table id="tablaProcesos">
+
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>PLACA</th>
+                    <th>INICIO</th>
+                    <th>FIN</th>
+                    <th>TIEMPO</th>
+                    <th>ESTADO</th>
+                </tr>
+            </thead>
+
+            <tbody id="listaProcesos">
+                <!-- Los procesos aparecerán aquí -->
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
 
         <section id="resultado" class="resultado hidden">
             <div class="resultado-header">

@@ -43,8 +43,8 @@ const btnPantalla = document.getElementById("btnPantalla");
 const procesosTurnoEl = document.getElementById("procesosTurno");
 const promedioTurnoEl = document.getElementById("promedioTurno");
 
+const alerta30 = document.getElementById("alerta30");
 const alerta15 = document.getElementById("alerta15");
-const alerta10 = document.getElementById("alerta10");
 const alerta5 = document.getElementById("alerta5");
 const alerta1 = document.getElementById("alerta1");
 
@@ -484,6 +484,29 @@ function mostrarResultado(
 
 function revisarAlertas() {
 
+    // 30 MINUTOS
+    if (
+        tiempoRestante === 30 * 60 &&
+        !alertasEjecutadas[30]
+    ) {
+
+        alertasEjecutadas[30] = true;
+
+        activarAlerta(
+            alerta30,
+            "QUEDAN 30 MINUTOS",
+            "amarilla"
+        );
+
+        sonido15();
+
+        hablar(
+            "Quedan treinta minutos"
+        );
+    }
+
+
+    // 15 MINUTOS
     if (
         tiempoRestante === 15 * 60 &&
         !alertasEjecutadas[15]
@@ -505,23 +528,7 @@ function revisarAlertas() {
     }
 
 
-    if (
-        tiempoRestante === 10 * 60 &&
-        !alertasEjecutadas[10]
-    ) {
-
-        alertasEjecutadas[10] = true;
-
-        activarAlerta(
-            alerta10,
-            "FALTAN 10 MINUTOS",
-            "naranja"
-        );
-
-        sonido10();
-    }
-
-
+    // 5 MINUTOS
     if (
         tiempoRestante === 5 * 60 &&
         !alertasEjecutadas[5]
@@ -536,9 +543,14 @@ function revisarAlertas() {
         );
 
         sonido5();
+
+        hablar(
+            "Quedan cinco minutos"
+        );
     }
 
 
+    // 1 MINUTO
     if (
         tiempoRestante === 60 &&
         !alertasEjecutadas[1]
@@ -553,6 +565,10 @@ function revisarAlertas() {
         );
 
         sonido1();
+
+        hablar(
+            "Queda un minuto"
+        );
     }
 }
 
@@ -596,7 +612,7 @@ function actualizarColor() {
             "0 0 35px rgba(255,32,40,.8)"
         );
 
-    } else if (minutos <= 10) {
+    } else if (minutos <= 15) {
 
         aplicarColor(
             "#ff7900",
@@ -605,7 +621,7 @@ function actualizarColor() {
             "0 0 35px rgba(255,121,0,.8)"
         );
 
-    } else if (minutos <= 15) {
+    } else if (minutos <= 30) {
 
         aplicarColor(
             "#ffd400",

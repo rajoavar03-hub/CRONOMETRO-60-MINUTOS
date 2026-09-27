@@ -328,12 +328,9 @@ button, input {
 .controles {
     width: min(1100px, 92vw);
     display: grid;
+    grid-template-columns: repeat(6, 1fr);
     gap: 10px;
     margin-top: 12px;
-}
-
-.controles-principales {
-    grid-template-columns: repeat(5, 1fr);
 }
 
 .btn-icon {
@@ -341,10 +338,170 @@ button, input {
 }
 
 .btn-iniciar { background: #008f36; }
-.btn-descargar { background: #0a6e9d; }
-.btn-cargando { background: #7b4bb7; }
+
 .btn-finalizar { background: #d71920; }
 .btn-reiniciar { background: #333; }
+
+/* =========================================================
+   NUEVOS BOTONES DE PROCESO
+========================================================= */
+
+.btn-descargar {
+    background: #0066cc;
+}
+
+.btn-cargando {
+    background: #7a3db8;
+}
+
+.btn-nuevo {
+    background: #008f36;
+}
+
+
+/* =========================================================
+   HISTORIAL DE PROCESOS
+========================================================= */
+
+.historial {
+    width: min(1050px, 92vw);
+    margin-top: 25px;
+    background: #111111;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.2);
+}
+
+.historial-header {
+    min-height: 75px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    color: white;
+    border-bottom: 1px solid #444444;
+}
+
+.historial-titulo {
+    display: block;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.historial-header small {
+    display: block;
+    margin-top: 4px;
+    color: #999999;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+.resumen-procesos {
+    display: flex;
+    gap: 30px;
+}
+
+.resumen-procesos div {
+    text-align: center;
+    min-width: 90px;
+}
+
+.resumen-procesos strong {
+    display: block;
+    font-size: 25px;
+    color: white;
+}
+
+.resumen-procesos span {
+    display: block;
+    margin-top: 3px;
+    color: #999999;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   TABLA
+========================================================= */
+
+.tabla-contenedor {
+    width: 100%;
+    max-height: 260px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+#tablaProcesos {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+    font-size: 13px;
+}
+
+#tablaProcesos thead {
+    background: #222222;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#tablaProcesos th {
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #cccccc;
+}
+
+#tablaProcesos td {
+    padding: 11px 10px;
+    text-align: center;
+    border-top: 1px solid #333333;
+}
+
+#tablaProcesos tbody tr:hover {
+    background: #1d1d1d;
+}
+
+
+/* Estados */
+
+.estado-cumplido {
+    color: #00c853;
+    font-weight: 800;
+}
+
+.estado-excedido {
+    color: #ff2028;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   RESPONSIVE HISTORIAL
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .historial-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .resumen-procesos {
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    #tablaProcesos {
+        min-width: 650px;
+    }
+
+}
+
 
 .alertas {
     width: min(1100px, 92vw);
@@ -522,10 +679,7 @@ body.proceso-finalizado .timer-box {
         text-align: left;
     }
 
-    .controles-principales {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
+  
     .resultado-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -568,10 +722,7 @@ body.proceso-finalizado .timer-box {
         flex-wrap: wrap;
     }
 
-    .controles-principales {
-        grid-template-columns: 1fr 1fr;
-    }
-
+    
     .alertas {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -591,9 +742,9 @@ body.proceso-finalizado .timer-box {
 }
 
 @media (max-width: 520px) {
-    .controles-principales,
+    
     .resultado-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .resultado-grid > div {
