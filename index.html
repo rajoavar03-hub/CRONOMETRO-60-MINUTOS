@@ -1,375 +1,148 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <meta name="theme-color"
-          content="#111111">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111111">
     <title>Tiempos Atención CD Galapa</title>
-
-    <link rel="stylesheet"
-          href="style.css">
-
+    <link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
-
-
-    <!-- =====================================================
-         CONTENEDOR PRINCIPAL
-    ====================================================== -->
-
-    <div class="app">
-
-
-        <!-- =================================================
-             ENCABEZADO
-        ================================================== -->
-
-        <header class="header">
-
-
-            <!-- LOGO -->
-
-            <div class="logo-container">
-
-                <img
-                    src="logo-asl.png"
-                    alt="ASL"
-                    class="logo"
-                >
-
-            </div>
-
-
-            <!-- TITULO -->
-
-            <div class="titulo">
-
-                <h1>
-                    TIEMPOS ATENCIÓN
-                </h1>
-
-                <h2>
-                    CD GALAPA
-                </h2>
-
-            </div>
-
-
-            <!-- IDENTIFICACIÓN -->
-
-            <div class="operacion">
-
-                <div class="operacion-icono">
-                    🚛
-                </div>
-
-                <div>
-
-                    <strong>
-                        ATENCIÓN SIDER
-                    </strong>
-
-                    <span>
-                        CONTROL DE TIEMPO
-                    </span>
-
-                </div>
-
-            </div>
-
-
-        </header>
-
-
-
-        <!-- =================================================
-             CONTENIDO PRINCIPAL
-        ================================================== -->
-
-        <main class="main">
-
-
-            <!-- =============================================
-                 CRONÓMETRO
-            ============================================== -->
-
-            <section class="timer-section">
-
-
-                <div class="timer-box">
-
-
-                    <div
-                        id="reloj"
-                        class="reloj"
-                    >
-                        60:00
-                    </div>
-
-
-                </div>
-
-
-            </section>
-
-
-
-            <!-- =============================================
-                 META
-            ============================================== -->
-
-            <section class="meta">
-
-
-                <div class="meta-icono">
-
-                    🎯
-
-                </div>
-
-
-                <div class="meta-texto">
-
-                    <span>
-                        META DE ATENCIÓN
-                    </span>
-
-                    <strong>
-                        60 MINUTOS
-                    </strong>
-
-                </div>
-
-
-            </section>
-
-
-
-            <!-- =============================================
-                 MENSAJE DE ESTADO
-            ============================================== -->
-
-            <section
-                id="mensaje"
-                class="mensaje"
-            >
-
-                LISTO PARA INICIAR
-
-            </section>
-
-
-
-            <!-- =============================================
-                 CONTROLES
-            ============================================== -->
-
-            <section class="controles">
-
-
-                <button
-                    id="btnIniciar"
-                    class="btn btn-iniciar"
-                >
-
-                    <span class="btn-icon">
-                        ▶
-                    </span>
-
-                    INICIAR
-
-                </button>
-
-
-                <button
-                    id="btnFinalizar"
-                    class="btn btn-finalizar"
-                    disabled
-                >
-
-                    <span class="btn-icon">
-                        ■
-                    </span>
-
-                    FINALIZAR
-
-                </button>
-
-
-                <button
-                    id="btnReiniciar"
-                    class="btn btn-reiniciar"
-                >
-
-                    <span class="btn-icon">
-                        ↻
-                    </span>
-
-                    REINICIAR
-
-                </button>
-
-
-            </section>
-
-
-
-            <!-- =============================================
-                 ALERTAS
-            ============================================== -->
-
-            <section class="alertas">
-
-
-                <div
-                    id="alerta15"
-                    class="alerta"
-                >
-
-                    <span class="circulo amarillo"></span>
-
-                    <div>
-                        <strong>
-                            15 MIN
-                        </strong>
-
-                        <small>
-                            ALERTA
-                        </small>
-                    </div>
-
-                </div>
-
-
-
-                <div
-                    id="alerta10"
-                    class="alerta"
-                >
-
-                    <span class="circulo naranja"></span>
-
-                    <div>
-                        <strong>
-                            10 MIN
-                        </strong>
-
-                        <small>
-                            ALERTA
-                        </small>
-                    </div>
-
-                </div>
-
-
-
-                <div
-                    id="alerta5"
-                    class="alerta"
-                >
-
-                    <span class="circulo rojo"></span>
-
-                    <div>
-                        <strong>
-                            5 MIN
-                        </strong>
-
-                        <small>
-                            ALERTA
-                        </small>
-                    </div>
-
-                </div>
-
-
-
-                <div
-                    id="alerta1"
-                    class="alerta"
-                >
-
-                    <span class="circulo rojo"></span>
-
-                    <div>
-                        <strong>
-                            1 MIN
-                        </strong>
-
-                        <small>
-                            ALERTA
-                        </small>
-                    </div>
-
-                </div>
-
-
-            </section>
-
-
-        </main>
-
-
-
-        <!-- =================================================
-             BARRA INFERIOR
-        ================================================== -->
-
-        <footer class="footer">
-
-
+<div class="app">
+
+    <header class="header">
+        <div class="logo-container">
+            <img src="logo-asl.png" alt="ASL" class="logo">
+        </div>
+
+        <div class="titulo">
+            <h1>TIEMPOS ATENCIÓN</h1>
+            <h2>CD GALAPA</h2>
+        </div>
+
+        <div class="operacion">
+            <div class="operacion-icono">🚛</div>
             <div>
+                <strong>ATENCIÓN SIDER</strong>
+                <span>CONTROL DE TIEMPO</span>
+            </div>
+        </div>
+    </header>
 
-                <strong>
-                    CD GALAPA
-                </strong>
+    <main class="main">
 
-                <span>
-                    TIEMPOS DE ATENCIÓN
-                </span>
-
+        <section class="turno-panel">
+            <div class="turno-info">
+                <span class="eyebrow">TURNO ACTUAL</span>
+                <strong id="turnoActual">TURNO C</strong>
+                <span id="horarioTurno">22:00 - 06:00</span>
             </div>
 
-
-            <div class="frase">
-
-                JUNTOS MOVEMOS EL RESULTADO
-
+            <div class="turno-actions">
+                <button id="btnIniciarTurno" class="btn btn-turno">▶ INICIAR TURNO</button>
+                <button id="btnFinalizarTurno" class="btn btn-turno-fin" disabled>■ FINALIZAR TURNO</button>
             </div>
 
+            <div class="turno-resumen">
+                <div><span>ESTADO</span><strong id="estadoTurno">TURNO NO INICIADO</strong></div>
+                <div><span>PROCESOS</span><strong id="procesosTurno">0</strong></div>
+                <div><span>PROMEDIO</span><strong id="promedioTurno">--</strong></div>
+            </div>
+        </section>
 
-            <button
-                id="btnPantalla"
-                class="pantalla"
-                title="Pantalla completa"
-            >
+        <section class="proceso-datos">
+            <label for="placa">PLACA</label>
+            <input id="placa" type="text" maxlength="10" placeholder="Ej. ABC123" autocomplete="off">
+            <div class="estado-box">
+                <span>ESTADO</span>
+                <strong id="estadoProceso">LISTO PARA INICIAR</strong>
+            </div>
+        </section>
 
-                ⛶
+        <section class="timer-section">
+            <div class="timer-box">
+                <div id="reloj" class="reloj">60:00</div>
+            </div>
+        </section>
 
+        <section class="meta">
+            <div class="meta-icono">🎯</div>
+            <div class="meta-texto">
+                <span>META DE ATENCIÓN</span>
+                <strong>60 MINUTOS</strong>
+            </div>
+        </section>
+
+        <section id="mensaje" class="mensaje">INICIA EL TURNO PARA COMENZAR</section>
+
+        <section class="controles controles-principales">
+            <button id="btnIniciar" class="btn btn-iniciar" disabled>
+                <span class="btn-icon">▶</span> INICIAR
             </button>
 
+            <button id="btnDescargar" class="btn btn-descargar" disabled>
+                <span class="btn-icon">↓</span> DESCARGAR
+            </button>
 
-        </footer>
+            <button id="btnCargando" class="btn btn-cargando" disabled>
+                <span class="btn-icon">↑</span> CARGANDO
+            </button>
 
+            <button id="btnFinalizar" class="btn btn-finalizar" disabled>
+                <span class="btn-icon">■</span> FINALIZAR PROCESO
+            </button>
 
-    </div>
+            <button id="btnReiniciar" class="btn btn-reiniciar" disabled>
+                <span class="btn-icon">↻</span> REINICIAR
+            </button>
+        </section>
 
+        <section class="alertas">
+            <div id="alerta15" class="alerta">
+                <span class="circulo amarillo"></span>
+                <div><strong>15 MIN</strong><small>PASAR POR FACTURAS</small></div>
+            </div>
+            <div id="alerta10" class="alerta">
+                <span class="circulo naranja"></span>
+                <div><strong>10 MIN</strong><small>ALERTA</small></div>
+            </div>
+            <div id="alerta5" class="alerta">
+                <span class="circulo rojo"></span>
+                <div><strong>5 MIN</strong><small>ALERTA</small></div>
+            </div>
+            <div id="alerta1" class="alerta">
+                <span class="circulo rojo"></span>
+                <div><strong>1 MIN</strong><small>ALERTA</small></div>
+            </div>
+        </section>
 
+        <section id="resultado" class="resultado hidden">
+            <div class="resultado-header">
+                <strong>RESULTADO DEL PROCESO</strong>
+                <span id="resultadoClasificacion">--</span>
+            </div>
+            <div class="resultado-grid">
+                <div><span>PLACA</span><strong id="resultadoPlaca">--</strong></div>
+                <div><span>TURNO</span><strong id="resultadoTurno">--</strong></div>
+                <div><span>INICIO</span><strong id="resultadoInicio">--</strong></div>
+                <div><span>FINALIZACIÓN</span><strong id="resultadoFin">--</strong></div>
+                <div><span>TIEMPO REAL</span><strong id="resultadoTiempo">--</strong></div>
+                <div><span>TIEMPO RESTANTE</span><strong id="resultadoRestante">--</strong></div>
+            </div>
+        </section>
 
-    <!-- JAVASCRIPT -->
+    </main>
 
-    <script src="script.js"></script>
+    <footer class="footer">
+        <div>
+            <strong>CD GALAPA</strong>
+            <span>TIEMPOS DE ATENCIÓN</span>
+        </div>
+        <div class="frase">JUNTOS MOVEMOS EL RESULTADO</div>
+        <button id="btnPantalla" class="pantalla" title="Pantalla completa">⛶</button>
+    </footer>
+</div>
 
-
+<script src="script.js"></script>
 </body>
-
 </html>
