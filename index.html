@@ -31,6 +31,72 @@
 
     <main class="main">
 
+        <!-- =====================================================
+     RELOJ OPERATIVO
+====================================================== -->
+
+<section class="reloj-operativo">
+
+    <div class="reloj-dia">
+
+        <span>HORA OPERATIVA</span>
+
+<input
+    id="horaOperativa"
+    type="text"
+    value="00:00:00"
+    maxlength="8"
+    inputmode="numeric"
+    autocomplete="off"
+>
+
+        <small id="fechaDia">
+            00/00/0000
+        </small>
+
+    </div>
+
+
+    <div class="modo-prueba">
+
+        <span>MODO DE PRUEBA</span>
+
+        <div class="prueba-controles">
+
+            <button
+                id="btnModoNormal"
+                class="btn-prueba activo"
+            >
+                ▶ NORMAL
+            </button>
+
+            <button
+                id="btnVelocidad"
+                class="btn-prueba"
+            >
+                ⚡ ×60
+            </button>
+
+            <button
+                id="btnAvanzar1"
+                class="btn-prueba"
+            >
+                +5 SEG
+            </button>
+
+            <button
+                id="btnAvanzar5"
+                class="btn-prueba"
+            >
+                +5 MIN
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
         <section class="turno-panel">
             <div class="turno-info">
                 <span class="eyebrow">TURNO ACTUAL</span>
@@ -222,6 +288,13 @@
                 PROCESOS DEL DÍA
             </span>
 
+            <button
+        id="btnVerProcesos"
+        class="btn-historial"
+            >
+        📋 VER PROCESOS
+        </button>
+
             <small>
                 REGISTRO DE VEHÍCULOS ATENDIDOS
             </small>
@@ -243,28 +316,53 @@
 
     </div>
 
-    <div class="tabla-contenedor">
+<div id="modalProcesos" class="modal-procesos hidden">
 
-        <table id="tablaProcesos">
+    <div class="modal-contenido">
 
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>PLACA</th>
-                    <th>INICIO</th>
-                    <th>FIN</th>
-                    <th>TIEMPO</th>
-                    <th>ESTADO</th>
-                </tr>
-            </thead>
+        <div class="modal-header">
 
-            <tbody id="listaProcesos">
-                <!-- Los procesos aparecerán aquí -->
-            </tbody>
+            <div>
+                <strong>PROCESOS DEL DÍA</strong>
+                <small>REGISTRO DE VEHÍCULOS ATENDIDOS</small>
+            </div>
 
-        </table>
+            <button
+                id="btnCerrarProcesos"
+                class="btn-cerrar-modal"
+            >
+                ✕
+            </button>
+
+        </div>
+
+        <div class="tabla-contenedor">
+
+            <table id="tablaProcesosModal">
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>TURNO</th>
+                        <th>PLACA</th>
+                        <th>INICIO</th>
+                        <th>FIN</th>
+                        <th>TIEMPO</th>
+                        <th>ESTADO</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="listaProcesosModal"></tbody>
+
+            </table>
+
+        </div>
 
     </div>
+
+</div>
 
 </section>
 

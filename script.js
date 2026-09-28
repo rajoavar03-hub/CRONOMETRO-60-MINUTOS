@@ -13,13 +13,22 @@ let alertasEjecutadas = {};
 let inicioProceso = null;
 let finProceso = null;
 
+
 let turnoActivo = false;
 let turnoActualCodigo = null;
 let turnoInicio = null;
 let procesosTurno = 0;
 let tiemposTurno = [];
+let turnoProcesoCodigo = null;
 
 let audioContext = null;
+let procesosDia = [];
+
+const CLAVE_HISTORIAL = "procesosDiaGalapa";
+
+
+
+// =========================================================
 
 const reloj = document.getElementById("reloj");
 const mensaje = document.getElementById("mensaje");
@@ -39,6 +48,7 @@ const btnCargando = document.getElementById("btnCargando");
 const btnFinalizar = document.getElementById("btnFinalizar");
 const btnReiniciar = document.getElementById("btnReiniciar");
 const btnPantalla = document.getElementById("btnPantalla");
+const btnNuevoProceso = document.getElementById("btnNuevoProceso");
 
 const procesosTurnoEl = document.getElementById("procesosTurno");
 const promedioTurnoEl = document.getElementById("promedioTurno");
@@ -58,46 +68,423 @@ const resultadoTiempo = document.getElementById("resultadoTiempo");
 const resultadoRestante = document.getElementById("resultadoRestante");
 
 
+const btnVerProcesos =
+    document.getElementById("btnVerProcesos");
+
+const btnCerrarProcesos =
+    document.getElementById("btnCerrarProcesos");
+
+const modalProcesos =
+    document.getElementById("modalProcesos");
+
+
+btnVerProcesos.addEventListener("click", () => {
+
+    actualizarHistorialModal();
+
+    modalProcesos.classList.remove("hidden");
+
+});
+
+
+btnCerrarProcesos.addEventListener("click", () => {
+
+    modalProcesos.classList.add("hidden");
+
+});
+
+
+modalProcesos.addEventListener("click", (event) => {
+
+    if (event.target === modalProcesos) {
+        modalProcesos.classList.add("hidden");
+    }
+
+});
+
+
+function actualizarHistorialModal() {
+
+    const lista =
+        document.getElementById(
+            "listaProcesosModal"
+        );
+
+    if (!lista) return;
+
+    lista.innerHTML = "";
+
+
+    procesosDia.forEach(
+        (proceso, indice) => {
+
+            const fila =
+                document.createElement("tr");
+
+            const claseEstado =
+                proceso.estado.includes(
+                    "DENTRO"
+                )
+                    ? "estado-cumplido"
+                    : proceso.estado.includes(
+                        "FUERA"
+                    )
+                        ? "estado-excedido"
+                        : "";
+
+            fila.innerHTML = `
+                <td>${indice + 1}</td>
+                <td>${proceso.turno}</td>
+                <td>${proceso.placa}</td>
+                <td>${proceso.inicio}</td>
+                <td>${proceso.fin}</td>
+                <td>${proceso.tiempo}</td>
+                <td class="${claseEstado}">
+                    ${proceso.estado}
+                </td>
+            `;
+
+            lista.appendChild(fila);
+        }
+    );
+}
+
+
+// =========================================================
+// RELOJ OPERATIVO Y MODO PRUEBA
+// =========================================================
+
+let relojOperativo = new Date();
+
+let modoPrueba = false;
+
+// 1 = tiempo normal
+// 60 = un segundo real equivale a un minuto simulado
+let velocidadPrueba = 1;
+
+// Indica si el usuario está escribiendo la hora
+let editandoHora = false;
+
+const horaOperativa = document.getElementById("horaOperativa");
+const fechaDia = document.getElementById("fechaDia");
+
+const btnModoNormal = document.getElementById("btnModoNormal");
+const btnVelocidad = document.getElementById("btnVelocidad");
+const btnAvanzar1 = document.getElementById("btnAvanzar1");
+const btnAvanzar5 = document.getElementById("btnAvanzar5");
+
+
+// =========================================================
+// MOSTRAR RELOJ OPERATIVO
+// =========================================================
+
+function actualizarRelojOperativo() {
+
+    const horas = String(
+        relojOperativo.getHours()
+    ).padStart(2, "0");
+
+    const minutos = String(
+        relojOperativo.getMinutes()
+    ).padStart(2, "0");
+
+    const segundos = String(
+        relojOperativo.getSeconds()
+    ).padStart(2, "0");
+
+    // No sobrescribir el input mientras el usuario escribe
+    if (!editandoHora) {
+        horaOperativa.value =
+            `${horas}:${minutos}:${segundos}`;
+    }
+
+    fechaDia.textContent =
+        relojOperativo.toLocaleDateString("es-CO", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        });
+}
+
+
+// =========================================================
+// USUARIO EMPIEZA A EDITAR LA HORA
+// =========================================================
+
+horaOperativa.addEventListener("focus", () => {
+
+    editandoHora = true;
+});
+
+
+// =========================================================
+// USUARIO TERMINA DE EDITAR LA HORA
+// =========================================================
+
+horaOperativa.addEventListener("blur", () => {
+
+    editandoHora = false;
+
+    aplicarHoraDigitada();
+});
+
+
+horaOperativa.addEventListener("change", () => {
+
+    aplicarHoraDigitada();
+});
+
+
+
+
+// =========================================================
+// APLICAR HORA DIGITADA
+// =========================================================
+
+function aplicarHoraDigitada() {
+
+    const valor = horaOperativa.value.trim();
+
+    const partes = valor.split(":");
+
+    if (partes.length !== 3) {
+
+        actualizarRelojOperativo();
+
+        return;
+    }
+
+    const horas = Number(partes[0]);
+    const minutos = Number(partes[1]);
+    const segundos = Number(partes[2]);
+
+    if (
+        !Number.isInteger(horas) ||
+        !Number.isInteger(minutos) ||
+        !Number.isInteger(segundos) ||
+        horas < 0 ||
+        horas > 23 ||
+        minutos < 0 ||
+        minutos > 59 ||
+        segundos < 0 ||
+        segundos > 59
+    ) {
+
+        alert(
+            "Hora inválida. Usa el formato HH:MM:SS."
+        );
+
+        actualizarRelojOperativo();
+
+        return;
+    }
+
+    relojOperativo.setHours(
+        horas,
+        minutos,
+        segundos,
+        0
+    );
+
+    // Después de digitar una hora,
+    // continuamos avanzando normalmente.
+    modoPrueba = true;
+    velocidadPrueba = 1;
+
+    btnModoNormal.classList.remove("activo");
+    btnVelocidad.classList.remove("activo");
+
+    actualizarRelojOperativo();
+    actualizarTurnoMostrado();
+}
+
+
+// =========================================================
+// MOTOR ÚNICO DE TIEMPO SIMULADO
+// =========================================================
+
+function avanzarTiempoSimulado(segundos) {
+
+    // ==========================================
+    // 1. AVANZAR RELOJ OPERATIVO
+    // ==========================================
+
+    relojOperativo = new Date(
+        relojOperativo.getTime() +
+        (segundos * 1000)
+    );
+
+
+    // ==========================================
+    // 2. AVANZAR CRONÓMETRO DEL PROCESO
+    // ==========================================
+
+    if (ejecutando) {
+
+        tiempoRestante -= segundos;
+
+        if (tiempoRestante < 0) {
+            tiempoRestante = 0;
+        }
+
+        actualizarReloj();
+        revisarAlertas();
+        actualizarColor();
+
+        if (tiempoRestante <= 0) {
+            terminarAutomaticamente();
+            return;
+        }
+    }
+
+
+    // ==========================================
+    // 3. ACTUALIZAR RELOJ OPERATIVO
+    // ==========================================
+
+    actualizarRelojOperativo();
+    actualizarTurnoMostrado();
+}
+
+
+// =========================================================
+// MODO NORMAL
+// =========================================================
+
+btnModoNormal.addEventListener("click", () => {
+
+    modoPrueba = false;
+    velocidadPrueba = 1;
+
+    // NORMAL vuelve a la hora real del computador
+    relojOperativo = new Date();
+
+    btnModoNormal.classList.add("activo");
+    btnVelocidad.classList.remove("activo");
+
+    actualizarRelojOperativo();
+    actualizarTurnoMostrado();
+});
+
+
+// =========================================================
+// MODO ×60 — INTERRUPTOR
+// =========================================================
+
+btnVelocidad.addEventListener("click", () => {
+
+    if (velocidadPrueba === 60) {
+
+        // ======================================
+        // DESACTIVAR ×60
+        // ======================================
+
+        velocidadPrueba = 1;
+        modoPrueba = true;
+
+        btnVelocidad.classList.remove("activo");
+
+    } else {
+
+        // ======================================
+        // ACTIVAR ×60
+        // ======================================
+
+        modoPrueba = true;
+        velocidadPrueba = 60;
+
+        btnVelocidad.classList.add("activo");
+        btnModoNormal.classList.remove("activo");
+    }
+});
+
+
+// =========================================================
+// +5 SEGUNDOS
+// =========================================================
+
+btnAvanzar1.addEventListener("click", () => {
+
+    // No cambiamos la velocidad actual.
+    // Si ×60 está activo, sigue activo.
+    avanzarTiempoSimulado(5);
+});
+
+
+// =========================================================
+// +5 MINUTOS
+// =========================================================
+
+btnAvanzar5.addEventListener("click", () => {
+
+    // No cambiamos la velocidad actual.
+    // Si ×60 está activo, sigue activo.
+    avanzarTiempoSimulado(300);
+});
+
+
+// =========================================================
+// ÚNICO RELOJ AUTOMÁTICO
+// =========================================================
+
+intervalo = setInterval(() => {
+
+    const segundosAvance =
+        modoPrueba
+            ? velocidadPrueba
+            : 1;
+
+    avanzarTiempoSimulado(
+        segundosAvance
+    );
+
+}, 1000);
+
+
 /* =========================================================
    TURNOS
 ========================================================= */
 
-function obtenerTurnoActual(fecha = new Date()) {
+function obtenerTurnoActual(fecha = relojOperativo) {
+
     const minutos = fecha.getHours() * 60 + fecha.getMinutes();
 
-    // C: 22:00 - 06:00
-    if (minutos >= 22 * 60 || minutos <= 6 * 60) {
+    // TURNO C: 22:00 - 06:00
+    if (minutos >= 1320 || minutos <= 360) {
         return {
             codigo: "C",
             horario: "22:00 - 06:00"
         };
     }
 
-    // A: 06:01 - 14:00
-    if (
-        minutos >= 6 * 60 + 1 &&
-        minutos <= 14 * 60
-    ) {
+    // TURNO A: 06:01 - 14:00
+    if (minutos >= 361 && minutos <= 840) {
         return {
             codigo: "A",
             horario: "06:01 - 14:00"
         };
     }
 
-    // B: 14:01 - 21:59
+    // TURNO B: 14:01 - 21:59
     return {
         codigo: "B",
         horario: "14:01 - 21:59"
     };
 }
 
+
 function actualizarTurnoMostrado() {
-    if (turnoActivo) return;
 
-    const turno = obtenerTurnoActual();
+    const turno =
+        obtenerTurnoActual(
+            relojOperativo
+        );
 
-    turnoActual.textContent = `TURNO ${turno.codigo}`;
-    horarioTurno.textContent = turno.horario;
+    turnoActual.textContent =
+        `TURNO ${turno.codigo}`;
+
+    horarioTurno.textContent =
+        turno.horario;
 }
 
 function iniciarTurno() {
@@ -107,7 +494,7 @@ function iniciarTurno() {
 
     turnoActivo = true;
     turnoActualCodigo = turno.codigo;
-    turnoInicio = new Date();
+    turnoInicio = new Date(relojOperativo);
 
     procesosTurno = 0;
     tiemposTurno = [];
@@ -207,15 +594,19 @@ function iniciar() {
 
     ejecutando = true;
 
-    inicioProceso = new Date();
+inicioProceso = new Date(relojOperativo);
 
-    alertasEjecutadas = {};
+const turnoProceso = obtenerTurnoActual(relojOperativo);
+turnoProcesoCodigo = turnoProceso.codigo;
+
+alertasEjecutadas = {};
 
     btnIniciar.disabled = true;
     btnDescargar.disabled = false;
     btnCargando.disabled = false;
     btnFinalizar.disabled = false;
     btnReiniciar.disabled = false;
+    btnNuevoProceso.disabled = false;
 
     placa.disabled = true;
 
@@ -228,35 +619,59 @@ function iniciar() {
 
     actualizarColor();
 
-    intervalo = setInterval(
-        contarSegundo,
-        1000
-    );
+    
 }
 
-function contarSegundo() {
-    if (tiempoRestante <= 0) {
-        terminarAutomaticamente();
-        return;
-    }
 
-    tiempoRestante--;
-
-    actualizarReloj();
-
-    revisarAlertas();
-
-    actualizarColor();
-
-    if (tiempoRestante <= 0) {
-        terminarAutomaticamente();
-    }
-}
 
 
 /* =========================================================
    ESTADOS DEL PROCESO
 ========================================================= */
+
+function nuevoProceso() {
+
+    if (ejecutando) return;
+
+    
+
+    ejecutando = false;
+
+    tiempoRestante = DURACION_SEGUNDOS;
+
+    alertasEjecutadas = {};
+
+    inicioProceso = null;
+    finProceso = null;
+    turnoProcesoCodigo = null;
+
+    placa.value = "";
+    placa.disabled = false;
+
+    resultado.classList.add("hidden");
+
+    document.body.classList.remove("proceso-finalizado");
+
+    estadoProceso.textContent = "LISTO PARA INICIAR";
+
+    mensaje.textContent =
+        `TURNO ${turnoActualCodigo} EN CURSO — LISTO PARA ATENDER`;
+
+    btnIniciar.disabled = false;
+    btnDescargar.disabled = true;
+    btnCargando.disabled = true;
+    btnFinalizar.disabled = true;
+    btnReiniciar.disabled = true;
+    btnNuevoProceso.disabled = true;
+
+    limpiarAlertasVisuales();
+
+    reloj.style.color = "#ff2028";
+    reloj.style.textShadow =
+        "0 0 5px #ff2028, 0 0 15px #ff2028, 0 0 30px rgba(255,32,40,0.7)";
+
+    actualizarReloj();
+}
 
 function cambiarEstado(nuevoEstado) {
     if (!ejecutando) return;
@@ -291,13 +706,11 @@ function terminarAutomaticamente() {
 }
 
 function completarProceso(motivo) {
-    clearInterval(intervalo);
-
-    intervalo = null;
+    
 
     ejecutando = false;
 
-    finProceso = new Date();
+    finProceso = new Date(relojOperativo);
 
     const tiempoTranscurrido =
         Math.max(
@@ -352,16 +765,17 @@ function completarProceso(motivo) {
     mostrarResultado(
         clasificacion,
         tiempoTranscurrido,
-        motivo
+        motivo,
+        
     );
+
+    guardarProceso();
 
     sonidoFin();
 }
 
 function reiniciar() {
-    clearInterval(intervalo);
-
-    intervalo = null;
+    
 
     ejecutando = false;
 
@@ -439,8 +853,7 @@ function mostrarResultado(
     resultadoPlaca.textContent =
         placa.value.trim().toUpperCase();
 
-    resultadoTurno.textContent =
-        `TURNO ${turnoActualCodigo}`;
+    resultadoTurno.textContent = `TURNO ${turnoProcesoCodigo}`;
 
     resultadoInicio.textContent =
         formatearHora(inicioProceso);
@@ -475,6 +888,132 @@ function mostrarResultado(
         resultadoClasificacion.textContent =
             "TIEMPO AGOTADO";
     }
+}
+
+// =========================================================
+// GUARDAR PROCESOS
+// =========================================================
+function guardarProceso() {
+
+    const proceso = {
+        placa: placa.value.trim().toUpperCase(),
+        turno: turnoProcesoCodigo,
+        inicio: formatearHora(inicioProceso),
+        fin: formatearHora(finProceso),
+        tiempo: formatearDuracion(
+            Math.max(
+                0,
+                Math.floor((finProceso - inicioProceso) / 1000)
+            )
+        ),
+        estado: estadoProceso.textContent
+    };
+
+    procesosDia.push(proceso);
+
+    localStorage.setItem(
+        CLAVE_HISTORIAL,
+        JSON.stringify(procesosDia)
+    );
+
+    actualizarHistorial();
+}
+
+
+// =========================================================
+// CARGAR PROCESOS
+// =========================================================
+
+function cargarProcesosDia() {
+
+    const guardados = localStorage.getItem(CLAVE_HISTORIAL);
+
+    if (!guardados) {
+        procesosDia = [];
+        return;
+    }
+
+    try {
+        procesosDia = JSON.parse(guardados);
+    } catch (error) {
+        procesosDia = [];
+        console.error("Error leyendo historial:", error);
+    }
+
+    actualizarHistorial();
+}
+
+// =========================================================
+// ACTUALIZAR TABLAS
+// =========================================================
+
+function actualizarHistorial() {
+
+    const procesosDiaEl =
+        document.getElementById("procesosDia");
+
+    const promedioDiaEl =
+        document.getElementById("promedioDia");
+
+
+    // ==========================================
+    // TOTAL DE PROCESOS
+    // ==========================================
+
+    if (procesosDiaEl) {
+
+        procesosDiaEl.textContent =
+            procesosDia.length;
+    }
+
+
+    // ==========================================
+    // PROMEDIO
+    // ==========================================
+
+    if (promedioDiaEl) {
+
+        if (!procesosDia.length) {
+
+            promedioDiaEl.textContent =
+                "--";
+
+        } else {
+
+            const segundos =
+                procesosDia.map(proceso => {
+
+                    const partes =
+                        proceso.tiempo.split(":");
+
+                    return (
+                        Number(partes[0]) * 60 +
+                        Number(partes[1])
+                    );
+                });
+
+            const promedio =
+                Math.round(
+                    segundos.reduce(
+                        (a, b) => a + b,
+                        0
+                    ) /
+                    segundos.length
+                );
+
+            promedioDiaEl.textContent =
+                formatearDuracion(
+                    promedio
+                );
+        }
+    }
+
+
+    // ==========================================
+    // ACTUALIZAR MODAL
+    // ==========================================
+
+    actualizarHistorialModal();
 }
 
 
@@ -655,12 +1194,12 @@ function aplicarColor(
 
 function limpiarAlertasVisuales() {
 
-    [
-        alerta15,
-        alerta10,
-        alerta5,
-        alerta1
-    ].forEach(
+   [
+    alerta30,
+    alerta15,
+    alerta5,
+    alerta1
+].forEach(
         alerta =>
             alerta.classList.remove(
                 "alerta-activa"
@@ -967,6 +1506,8 @@ btnReiniciar.addEventListener(
     reiniciar
 );
 
+btnNuevoProceso.addEventListener("click", nuevoProceso);
+
 
 /* =========================================================
    INICIO
@@ -990,6 +1531,14 @@ function inicializar() {
         "--";
 
     actualizarReloj();
+
+
+
+
+// Mostrar inmediatamente al cargar
+actualizarRelojOperativo();
+actualizarTurnoMostrado();
+cargarProcesosDia();
 }
 
 inicializar();
